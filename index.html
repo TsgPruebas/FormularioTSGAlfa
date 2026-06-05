@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TSG - Reporte de Cumplidos</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Librería para comprimir ZIP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <img src="ImagenesForm/LogoTSG.png" alt="TSG Logo" class="logo">
+            <h1>Reporte de Cumplidos</h1>
+        </header>
+
+        <div class="alert-box">
+            <p><strong>⚠️ IMPORTANTE:</strong> Envíe todos los documentos. <strong>Remisiones, recibo de bascula y hoja de ruta. </strong>.</p>
+        </div>
+
+        <form id="report-form" action="https://formsubmit.co/tomas.sarmiento@tsgsas.com.co" method="POST" enctype="multipart/form-data">
+
+            <input type="hidden" name="_subject" value="Nuevo Reporte de Cumplido">
+            <input type="hidden" name="_cc" value="Operaciones.cundinamarca@tsgsas.com.co, auxiliar.transporte@tsgsas.com.co">
+            <input type="hidden" name="_template" value="table">
+            <input type="hidden" name="_captcha" value="false">
+
+            <input type="hidden" name="_next" value="https://ComercialTSG.github.io/FormTSGCumplidos/success.html">
+
+            <div class="form-group">
+                <label for="placa">Placa del Vehículo:</label>
+                <input type="text" id="placa" name="Placa" placeholder="Ej: ABC-123" required>
+            </div>
+
+            <div class="form-group">
+                <label for="remesa">Número de Remesa:</label>
+                <input type="text" id="remesa" name="Remesa" placeholder="Ej: REM12345" required>
+            </div>
+
+            <div class="photo-section">
+                <label>Fotos / Documentos:</label>
+                <div class="camera-controls">
+                    <button type="button" id="open-camera" class="btn-secondary">Cámara</button>
+                    <button type="button" id="browse-files" class="btn-secondary">Galería</button>
+                    <input type="file" id="file-upload" accept="image/*" multiple hidden>
+                </div>
+                <div id="photo-preview" class="preview-grid"></div>
+                <p class="photo-count">Fotos: <span id="count">0</span></p>
+                
+
+                <input type="file" name="attachment" id="zip-input" hidden>
+            </div>
+
+            <button type="submit" id="submit-btn" class="btn-primary">Enviar Reporte</button>
+        </form>
+
+        <div id="loading-overlay" class="hidden">
+            <div class="loader"></div>
+            <p>Comprimiendo fotos... por favor espere</p>
+        </div>
+    </div>
+
+
+    <div id="camera-modal" class="modal hidden">
+        <div class="modal-content">
+            <video id="video" autoplay playsinline></video>
+            <div class="camera-actions">
+                <button id="capture-photo" class="btn-capture"></button>
+                <button id="close-camera" class="btn-close">Cerrar</button>
+            </div>
+            <canvas id="canvas" style="display:none;"></canvas>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
