@@ -138,30 +138,19 @@ form.addEventListener('submit', async (e) => {
 
         const zipBlob = await zip.generateAsync({ type: "blob", compression: "DEFLATE" });
         
-        if (zipBlob.size > 10 * 1024 * 1024) {
-            alert("El archivo es demasiado grande (máximo 10MB). Por favor, tome menos fotos o elimine algunas de la galería.");
+        if (zipBlob.size > 5 * 1024 * 1024) {
+            alert("El archivo es demasiado grande (máximo 5MB). Por favor, tome menos fotos o elimine algunas de la galería.");
             submitBtn.disabled = false;
             loadingOverlay.classList.add('hidden');
             return;
         }
 
-        const formData = new FormData(form);
-        formData.set('attachment', zipBlob, "fotos_reporte.zip");
+        const zipFile = new File([zipBlob], "fotos_reporte.zip", { type: "application/zip" });
+        const dataTransfer = new DataTransfer();
+        dataTransfer.items.add(zipFile);
+        zipInput.files = dataTransfer.files;
 
-        const response = await fetch(form.action, {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'Accept': 'application/json'
-            }
-        });
-
-        if (response.ok) {
-            window.location.href = form.querySelector('input[name="_next"]').value;
-        } else {
-            const result = await response.json();
-            throw new Error(result.message || "Error del servidor (500)");
-        }
+        form.submit();
 
     } catch (error) {
         console.error(error);
